@@ -1,5 +1,5 @@
 0. python -m venv venv 
-1 venv\Scripts\activate
+1. venv\Scripts\activate
 
 2. pip install -r req.txt
 3. python manage.py createsuperuser  
