@@ -5,5 +5,5 @@
 5. python manage.py migrate
 6. python manage.py runserver
 
-For take a token /api/auth/
-check information /api/users_list/
+For take a token http://127.0.0.1:8000/api/auth/
+check information http://127.0.0.1:8000/api/users_list/
