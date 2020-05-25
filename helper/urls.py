@@ -29,7 +29,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api/users_list/$', UserList.as_view(), name='user_list'),
     url(r'^api/users_list/(?P<employee_id>\d+)/$', UserDetail.as_view(), name='user_list'),
-    url(r'^api/auth/$', UserAuthenticaation.as_view(), name='User Authenticaation API')
+    url(r'^api/auth/$', UserAuthenticaation.as_view(), name='User Authenticaation API'),
+    url(r'^rest-auth/', include('rest_auth.urls')),#D+React
+    url(r'^rest-auth/registration/',include('rest_auth.registration.urls')), #D+React
+
     #path('', include(router.urls)),
     #path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
