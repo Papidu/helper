@@ -13,26 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-#from django.contrib import admin
-#from django.urls import include, path
-#from rest_framework import routers
-#from helper.applicationHR import views
-
-#router = routers.DefaultRouter()
-#router.register(r'users', views.UserViewSet)
-#router.register(r'groups', views.GroupViewSet)
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
-from helper.applicationHR.api import UserList, UserAuthenticaation,UserDetail
+from helper.applicationHR.api import UserList, UserDetail, registratioUser_view # UserAuthenticaation,
+from rest_framework.authtoken.views import obtain_auth_token
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api/users_list/$', UserList.as_view(), name='user_list'),
-    url(r'^api/users_list/(?P<employee_id>\d+)/$', UserDetail.as_view(), name='user_list'),
-    url(r'^api/auth/$', UserAuthenticaation.as_view(), name='User Authenticaation API'),
-    url(r'^rest-auth/', include('rest_auth.urls')),#D+React
-    url(r'^rest-auth/registration/',include('rest_auth.registration.urls')), #D+React
-
-    #path('', include(router.urls)),
-    #path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/users_list/(?P<phone>\d+)/$', UserDetail.as_view(), name='user_list'),
+    path('api/register/', registratioUser_view, name='register'),
+    path('api/login/', obtain_auth_token, name="login"),
 ]

@@ -1,52 +1,66 @@
-from rest_framework.authtoken.views import ObtainAuthToken
+#from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import *
+from rest_framework.decorators import api_view #permission_classes #Views DRF
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from .models import User, Summary
+from .serializers import UserSerializer, SummarySerializer, RegistrationSerializer
+from rest_framework import permissions
 
-class UserAuthenticaation(ObtainAuthToken):
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        return Response(token.key)
+
+@api_view(['POST',])
+#@permission_classes((AllowAny))
+def registratioUser_view(request):
+    if request.method == 'POST':
+        serializer = RegistrationSerializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            user = serializer.save()
+            data['response'] = "successfully registered a new user."
+            data['phone'] = user.phone
+            data['username'] = user.username
+            data['password'] = user.password
+            token = Token.objects.get(user=user).key
+            data['token'] = token
+        else:
+            data = serializer.errors
+        return Response(data)
 
 class UserList(APIView):
-
+    permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
-        model = Users.objects.all()
-        serializer = UsersSerializer(model, many=True)
+        model = User.objects.all()
+        serializer = UserSerializer(model, many=True)
         return Response(serializer.data)
 
     def post(self,request):
-        serializer = UsersSerializer(data=request.data)
+        serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 
-#class LoginUser
-
 class UserDetail(APIView):
-    def get_user(self, employee_id):
+    permission_classes = [permissions.IsAuthenticated]
+    def get_user(self, username):
         try:
-            model = Users.objects.get(id=employee_id)
+            model = User.objects.get(id=username)
             return model
-        except Users.DoesNotExist:
-            return #Response(f'User with {employee_id} is not found on database', status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist:
+            return Response(f'User with {username} is not found on database', status=status.HTTP_404_NOT_FOUND)
 
-    def get(self, request, employee_id):
-        if not self.get_user(employee_id):
-            Response(f'User with {employee_id} is not found on database', status=status.HTTP_404_NOT_FOUND)
-        serializer = UsersSerializer(self.get_user(employee_id))
+    def get(self, request, phone):
+        if not self.get_user(phone):
+            Response(f'User with {phone} is not found on database', status=status.HTTP_404_NOT_FOUND)
+        serializer = UserSerializer(self.get_user(phone))
         return Response(serializer.data)
 
-    def post(self, request, employee_id):
-        if not self.get_user(employee_id):
-            Response(f'User with {employee_id} is not found on database', status=status.HTTP_404_NOT_FOUND)
-        serializer = UsersSerializer(self.get_user(employee_id), data=request.data)
+    def post(self, request, phone):
+        if not self.get_user(phone):
+            Response(f'User with {phone} is not found on database', status=status.HTTP_404_NOT_FOUND)
+        serializer = UserSerializer(self.get_user(phone), data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
