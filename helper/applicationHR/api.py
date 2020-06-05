@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view #permission_classes #Views DRF
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import User, Summary
-from .serializers import UserSerializer, SummarySerializer, RegistrationSerializer
+from .models import User, Summary, Cards
+from .serializers import UserSerializer, SummarySerializer, CardsSerializer, RegistrationSerializer
 from rest_framework import permissions
 
 
@@ -29,7 +29,7 @@ def registratioUser_view(request):
         return Response(data)
 
 class UserList(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
     def get(self, request):
         model = User.objects.all()
         serializer = UserSerializer(model, many=True)
@@ -41,9 +41,40 @@ class UserList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+class SummaryList(APIView):
+    #permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        model = Summary.objects.all()
+        serializer = SummarySerializer(model, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = SummarySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+class CardsList(APIView):
+    #permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        model = Summary.objects.all()
+        serializer = CardsSerializer(model, many=True)
+        return Response(serializer.data)
+
+class PersonalList( APIView ):
+    #permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        model = User.objects.all()
+        serializer = UserSerializer(model, many=True)
+        return Response(serializer.data)
+
+
 
 class UserDetail(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
     def get_user(self, username):
         try:
             model = User.objects.get(id=username)

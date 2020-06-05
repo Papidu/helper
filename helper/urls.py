@@ -16,13 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
-from helper.applicationHR.api import UserList, UserDetail, registratioUser_view # UserAuthenticaation,
+from helper.applicationHR.api import UserList, UserDetail, registratioUser_view, SummaryList, CardsList, PersonalList # UserAuthenticaation,
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api/users_list/$', UserList.as_view(), name='user_list'),
     url(r'^api/users_list/(?P<phone>\d+)/$', UserDetail.as_view(), name='user_list'),
+
+    url(r'^api/personal/$', PersonalList.as_view(), name='cards_list'),
+
+    url(r'^api/cards/$', CardsList.as_view(), name='cards_list'),
+
+    url(r'^api/employees/$', SummaryList.as_view(), name='summary_list'),
+
+
     path('api/register/', registratioUser_view, name='register'),
     path('api/login/', obtain_auth_token, name="login"),
 ]

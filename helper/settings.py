@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "allauth",
     'allauth.account',
     'rest_auth.registration',
-
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
     #'rest_auth',
@@ -59,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'helper.urls'
@@ -149,3 +151,10 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_AUTHENTICATION_METHOD = 'username'
 AUTH_USER_MODEL = 'applicationHR.User'
 ACCOUNT_EMAIL_REQUIRED = False
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_WHITELIST = [
+    "http://192.168.0.161:8080",
+]

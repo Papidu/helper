@@ -1,14 +1,17 @@
 from rest_framework import serializers
 
 
-from helper.applicationHR.models import User, Summary #Users
+from helper.applicationHR.models import User, Summary, Cards #Users
 
 class SummarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Summary
         fields = ('id', 'name', 'positionId', 'age', 'salary', 'workedFor', 'recieved', 'scoreBefore', 'scoreAfter', 'starred' )
 
-
+class CardsSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Cards
+		fields = ('id', 'name', 'position')
 
 # class RegistrationSerializer(serializers.ModelSerializer):
 #     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
