@@ -1,7 +1,8 @@
+from django.contrib.auth import authenticate
 from rest_framework import serializers
 
 
-from helper.applicationHR.models import User, Summary, Cards #Users
+from helper.applicationHR.models import User, Summary, Cards, Personnel, Employees #Users
 
 class SummarySerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,10 +69,20 @@ class UserSerializer(serializers.ModelSerializer):
         fields =['phone', 'username', 'position', 'assigments', 'last_login', 'date_joined', 'photo']
 
 
+class PersonnelSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Personnel
+		fields = ('id', 'name', 'position','assessment')
 
+class EmployeesSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Employees
+		fields = ('id', 'name', 'position','age', 'salary', 'workedFor', 'recieved', 'score', 'scoreBefore', 'scoreBefore', 'starred', 'cardId')
 
-
-
+class TokenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields =['phone', 'username', 'position', 'assigments', 'last_login', 'date_joined', 'photo']
 
 
 

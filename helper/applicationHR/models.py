@@ -39,7 +39,8 @@ class MyUserManager(BaseUserManager):
 class Cards(models.Model):
     name = models.CharField(max_length=150)
     position = models.CharField(max_length=150)
-
+    def __str__(self):
+        return self.name
 
 class User(AbstractBaseUser):
     phone = models.CharField(verbose_name='phone', max_length=20, unique=True)
@@ -53,6 +54,8 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
+    usertoken = models.CharField(verbose_name='token', max_length=255, unique=True, null=True,blank=True)
+
     def upload_photo(self, filename):
         path = 'documents/photo/{}'.format(filename)
         return path
@@ -74,7 +77,7 @@ class User(AbstractBaseUser):
 
 class Summary(models.Model):
     name = models.CharField(max_length=255)
-    positionId = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    position = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     age = models.IntegerField(default=0)
     salary = models.IntegerField(default=0)
     workedFor = models.CharField(max_length=255)
@@ -83,6 +86,28 @@ class Summary(models.Model):
     scoreAfter = models.FloatField(default=0.0)
     starred = models.BooleanField(default=False)
 
+class Employees(models.Model):
+    name = models.CharField(max_length=255)
+    cardId = models.OneToOneField(Cards, on_delete=models.CASCADE)
+    position = models.CharField(max_length=255)
+    age = models.IntegerField(default=18)
+    salary = models.IntegerField(default=0)
+    workedFor = models.CharField(max_length=255)
+    recieved = models.DateTimeField(auto_now_add=True)
+    score = models.FloatField(default=0.0)
+    scoreBefore = models.FloatField(default=0.0)
+    scoreAfter = models.FloatField(default=0.0)
+    starred = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+class Personnel(models.Model):
+    name = models.CharField(max_length=250)#models.OneToOneField(User, on_delete=models.CASCADE)
+    position = models.CharField(max_length=250)
+    assessment = models.CharField(max_length=250)
+
+    def __str__(self):
+        return self.name
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

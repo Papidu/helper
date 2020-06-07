@@ -14,9 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls import url
-from helper.applicationHR.api import UserList, UserDetail, registratioUser_view, SummaryList, CardsList, PersonalList # UserAuthenticaation,
+from helper.applicationHR.api import CustomObtainAuthToken, UserList, UserDetail, registratioUser_view, SummaryList, CardsList, EmployeesList, PersonnellList# UserAuthenticaation,
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
@@ -24,13 +24,13 @@ urlpatterns = [
     url(r'^api/users_list/$', UserList.as_view(), name='user_list'),
     url(r'^api/users_list/(?P<phone>\d+)/$', UserDetail.as_view(), name='user_list'),
 
-    url(r'^api/personal/$', PersonalList.as_view(), name='cards_list'),
+    url(r'^api/personnel/$', PersonnellList.as_view(), name='personal_list'),
 
     url(r'^api/cards/$', CardsList.as_view(), name='cards_list'),
-
-    url(r'^api/employees/$', SummaryList.as_view(), name='summary_list'),
+#
+    url(r'^api/employees/$', EmployeesList.as_view(), name='employeesList_list'),
 
 
     path('api/register/', registratioUser_view, name='register'),
-    path('api/login/', obtain_auth_token, name="login"),
+    path('api/login/', CustomObtainAuthToken.as_view(), name="login"),
 ]

@@ -1,13 +1,15 @@
-#from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view #permission_classes #Views DRF
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import User, Summary, Cards
-from .serializers import UserSerializer, SummarySerializer, CardsSerializer, RegistrationSerializer
+from .models import User, Summary, Cards, Employees, Personnel
+from .serializers import *
 from rest_framework import permissions
+
+from rest_framework.authtoken.views import ObtainAuthToken
 
 
 @api_view(['POST',])
@@ -41,6 +43,8 @@ class UserList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+
+
 class SummaryList(APIView):
     #permission_classes = [permissions.IsAuthenticated]
 
@@ -59,16 +63,24 @@ class CardsList(APIView):
     #permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        model = Summary.objects.all()
+        model = Cards.objects.all()
         serializer = CardsSerializer(model, many=True)
         return Response(serializer.data)
 
-class PersonalList( APIView ):
+class PersonnellList( APIView ):
     #permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        model = User.objects.all()
-        serializer = UserSerializer(model, many=True)
+        model = Personnel.objects.all()
+        serializer = PersonnelSerializer(model, many=True)
+        return Response(serializer.data)
+
+class EmployeesList( APIView ):
+    #permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        model = Employees.objects.all()
+        serializer = EmployeesSerializer(model, many=True)
         return Response(serializer.data)
 
 
@@ -103,3 +115,9 @@ class UserDetail(APIView):
         model = self.get_user(employee_id)
         model.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class CustomObtainAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'],)
+        return Response({'token': token.key, 'id': token.user_id, 'username': token.user.username} ) #user_id})

@@ -137,13 +137,15 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     #'rest_framework.permissions.IsAuthenticated',
-    #     'rest_framework.permissions.IsAdminUser',
-    #
-    # ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        #'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser',
+
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ]
 }
 
@@ -153,8 +155,3 @@ AUTH_USER_MODEL = 'applicationHR.User'
 ACCOUNT_EMAIL_REQUIRED = False
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ORIGIN_WHITELIST = [
-    "http://192.168.0.161:8080",
-]
