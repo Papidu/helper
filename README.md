@@ -1,11 +1,11 @@
-0. python -m venv venv 
-1. venv\Scripts\activate
+0. python -m venv venv  - установка виртуального окружения 
+1. venv\Scripts\activate - активация виртуального окружения 
+2. pip install -r req.txt - установка всех зависимостей 
+3. python manage.py makemigrations  - подготовка к изменениям в бд
+4. python manage.py migrate  - изменения в бд
+5. python manage.py createsuperuser - создание супер пользователя 
+6. python manage.py runserver - запуск сервера 
 
-2. pip install -r req.txt
-3. python manage.py createsuperuser  
-4. python manage.py makemigrations
-5. python manage.py migrate
-6. python manage.py runserver
+for registration: http://127.0.0.1:8000/api/register/
+for login http://127.0.0.1:8000/api/login/
 
-For take a token http://127.0.0.1:8000/api/auth/
-check information http://127.0.0.1:8000/api/users_list/
