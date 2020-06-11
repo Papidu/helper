@@ -68,6 +68,11 @@ class CardsList(APIView):
         model = Cards.objects.all()
         serializer = CardsSerializer(model, many=True)
         return Response(serializer.data)
+class CardsCreate(generics.CreateAPIView):
+    serializer_class = CardsSerializer
+
+
+
 
 class PersonnellList( APIView ):
     #permission_classes = [permissions.AllowAny]
@@ -90,7 +95,8 @@ class EmployeesList( generics.ListAPIView ):
 class EmployeesDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = EmployeesSerializer
     queryset = Employees.objects.all()
-
+class EmployeesCreate(generics.CreateAPIView):
+    serializer_class = EmployeesSerializer
 
 class UserDetail(APIView):
     #permission_classes = [permissions.AllowAny]

@@ -88,7 +88,7 @@ class Summary(models.Model):
 
 class Employees(models.Model):
     name = models.CharField(max_length=255)
-    cardId = models.ForeignKey(Cards, on_delete=models.CASCADE, blank=True)#models.OneToOneField(Cards, on_delete=models.CASCADE, blank=True)
+    cardId = models.ForeignKey(Cards, on_delete=models.CASCADE, blank=True, null=True)#models.OneToOneField(Cards, on_delete=models.CASCADE, blank=True)
     position = models.CharField(max_length=255)
     age = models.IntegerField(default=18)
     salary = models.IntegerField(default=0)

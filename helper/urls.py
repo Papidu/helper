@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf.urls import url
-from helper.applicationHR.api import CustomObtainAuthToken, UserList, UserDetail, registratioUser_view, SummaryList, CardsList,EmployeesDetailView, EmployeesList, PersonnellList# UserAuthenticaation,
+from helper.applicationHR.api import CustomObtainAuthToken, UserList, UserDetail, CardsCreate, registratioUser_view, EmployeesCreate,SummaryList, CardsList,EmployeesDetailView, EmployeesList, PersonnellList# UserAuthenticaation,
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
@@ -27,9 +27,11 @@ urlpatterns = [
     url(r'^api/personnel/$', PersonnellList.as_view(), name='personal_list'),
 
     url(r'^api/cards/$', CardsList.as_view(), name='cards_list'),
-#
+    url(r'^api/cards_create/$', CardsCreate.as_view(), name='cards_create'),
+#db2forIndia.sqlite3
     url(r'^api/employees/$', EmployeesList.as_view(), name='employeesList_list'),
     url(r'^api/empl_detail/(?P<pk>\d+)/$', EmployeesDetailView.as_view(), name='employees_detail'),
+    url(r'^api/empl_create/', EmployeesCreate.as_view(), name='empl_create'),
 
 
     path('api/register/', registratioUser_view, name='register'),
