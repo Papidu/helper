@@ -7,13 +7,13 @@ from rest_framework.decorators import api_view #permission_classes #Views DRF
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import User, Summary, Cards, Employees, Personnel
 from .serializers import *
-from rest_framework import permissions
+from rest_framework import permissions, generics
 
 from rest_framework.authtoken.views import ObtainAuthToken
 
 
 @api_view(['POST',])
-#@permission_classes((AllowAny))
+#@permission_classes(AllowAny)
 def registratioUser_view(request):
     if request.method == 'POST':
         serializer = RegistrationSerializer(data=request.data)
@@ -31,7 +31,7 @@ def registratioUser_view(request):
         return Response(data)
 
 class UserList(APIView):
-    #permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.AllowAny]
     def get(self, request):
         model = User.objects.all()
         serializer = UserSerializer(model, many=True)
@@ -46,6 +46,7 @@ class UserList(APIView):
 
 
 class SummaryList(APIView):
+    #permission_classes = [permissions.AllowAny]
     #permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
@@ -60,6 +61,7 @@ class SummaryList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
 class CardsList(APIView):
+    #permission_classes = [permissions.AllowAny]
     #permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
@@ -68,6 +70,7 @@ class CardsList(APIView):
         return Response(serializer.data)
 
 class PersonnellList( APIView ):
+    #permission_classes = [permissions.AllowAny]
     #permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
@@ -75,18 +78,25 @@ class PersonnellList( APIView ):
         serializer = PersonnelSerializer(model, many=True)
         return Response(serializer.data)
 
-class EmployeesList( APIView ):
+class EmployeesList( generics.ListAPIView ):
+    #permission_classes = [permissions.AllowAny]
     #permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request):
-        model = Employees.objects.all()
-        serializer = EmployeesSerializer(model, many=True)
-        return Response(serializer.data)
-
+    serializer_class = EmployeesSerializer
+    queryset = Employees.objects.all()
+    # def get(self, request):
+    #     model = Employees.objects.all()
+    #     serializer = EmployeesSerializer(model, many=True)
+    #     return Response(serializer.data)
+class EmployeesDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = EmployeesSerializer
+    queryset = Employees.objects.all()
 
 
 class UserDetail(APIView):
+    #permission_classes = [permissions.AllowAny]
+
     #permission_classes = [permissions.IsAuthenticated]
+
     def get_user(self, username):
         try:
             model = User.objects.get(id=username)
@@ -117,6 +127,8 @@ class UserDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class CustomObtainAuthToken(ObtainAuthToken):
+    #permission_classes = [permissions.AllowAny]
+
     def post(self, request, *args, **kwargs):
         response = super(CustomObtainAuthToken, self).post(request, *args, **kwargs)
         token = Token.objects.get(key=response.data['token'],)

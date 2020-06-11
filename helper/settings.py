@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'helper.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3', #postgresql',             #sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db2forIndia.sqlite3'),
     }
 }
@@ -137,11 +137,12 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
-    'DEFAULT_PERMISSION_CLASSES': [
-        #'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.IsAdminUser',
-
-    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     #'rest_framework.permissions.IsAuthenticated',
+    #     #'rest_framework.permissions.IsAdminUser',
+    #     'rest_framework.permissions.AllowAny',
+    #
+    # ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.BasicAuthentication',

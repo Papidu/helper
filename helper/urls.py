@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf.urls import url
-from helper.applicationHR.api import CustomObtainAuthToken, UserList, UserDetail, registratioUser_view, SummaryList, CardsList, EmployeesList, PersonnellList# UserAuthenticaation,
+from helper.applicationHR.api import CustomObtainAuthToken, UserList, UserDetail, registratioUser_view, SummaryList, CardsList,EmployeesDetailView, EmployeesList, PersonnellList# UserAuthenticaation,
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^api/cards/$', CardsList.as_view(), name='cards_list'),
 #
     url(r'^api/employees/$', EmployeesList.as_view(), name='employeesList_list'),
+    url(r'^api/empl_detail/(?P<pk>\d+)/$', EmployeesDetailView.as_view(), name='employees_detail'),
 
 
     path('api/register/', registratioUser_view, name='register'),

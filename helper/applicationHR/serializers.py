@@ -77,13 +77,13 @@ class PersonnelSerializer(serializers.ModelSerializer):
 class EmployeesSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Employees
+		#fields = '__all__'
 		fields = ('id', 'name', 'position','age', 'salary', 'workedFor', 'recieved', 'score', 'scoreBefore', 'scoreBefore', 'starred', 'cardId')
 
 class TokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields =['phone', 'username', 'position', 'assigments', 'last_login', 'date_joined', 'photo']
-
 
 
 
