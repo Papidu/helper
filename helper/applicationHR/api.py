@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import User, Summary, Cards, Employees, Personnel
 from .serializers import *
 from rest_framework import permissions, generics
-
+from rest_framework.filters import SearchFilter,OrderingFilter
 from rest_framework.authtoken.views import ObtainAuthToken
 
 
@@ -97,6 +97,11 @@ class EmployeesDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Employees.objects.all()
 class EmployeesCreate(generics.CreateAPIView):
     serializer_class = EmployeesSerializer
+class EmployeesDetailCardId(generics.ListAPIView):#card workers
+    serializer_class = EmployeesSerializer
+    queryset = Employees.objects.all()
+    filter_backends = (SearchFilter,OrderingFilter)
+    search_fields = ('name','cardId__name')
 
 class UserDetail(APIView):
     #permission_classes = [permissions.AllowAny]
